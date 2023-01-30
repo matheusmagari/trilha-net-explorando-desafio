@@ -1,60 +1,50 @@
-namespace DesafioProjetoHospedagem.Models
+namespace DesafioProjetoHospedagem.Models;
+
+public class Reserva
 {
-    public class Reserva
+    public List<Pessoa> Hospedes { get; set; }
+    public Suite Suite { get; set; }
+    public int DiasReservados { get; set; }
+
+    public Reserva() { }
+
+    public Reserva(int diasReservados)
     {
-        public List<Pessoa> Hospedes { get; set; }
-        public Suite Suite { get; set; }
-        public int DiasReservados { get; set; }
+        DiasReservados = diasReservados;
+    }
 
-        public Reserva() { }
-
-        public Reserva(int diasReservados)
+    public void CadastrarHospedes(List<Pessoa> hospedes)
+    {
+        if (hospedes.Count <= this.Suite.Capacidade)
         {
-            DiasReservados = diasReservados;
+            Hospedes = hospedes;
+        }
+        else
+        {
+            throw new System.Exception("A quantidade de hóspedes é maior que a capacidade da suíte");
+        }
+    }
+
+    public void CadastrarSuite(Suite suite)
+    {
+        Suite = suite;
+    }
+
+    public int ObterQuantidadeHospedes()
+    {
+        return this.Hospedes.Count;
+    }
+
+    public decimal CalcularValorDiaria()
+    {
+        decimal valor = this.Suite.ValorDiaria * this.DiasReservados;
+
+        if (this.DiasReservados >= 10)
+        {
+            double valorDescontado = (double)valor * 0.1;
+            valor = valor - Decimal.Parse(valorDescontado.ToString());
         }
 
-        public void CadastrarHospedes(List<Pessoa> hospedes)
-        {
-            // TODO: Verificar se a capacidade é maior ou igual ao número de hóspedes sendo recebido
-            // *IMPLEMENTE AQUI*
-            if (true)
-            {
-                Hospedes = hospedes;
-            }
-            else
-            {
-                // TODO: Retornar uma exception caso a capacidade seja menor que o número de hóspedes recebido
-                // *IMPLEMENTE AQUI*
-            }
-        }
-
-        public void CadastrarSuite(Suite suite)
-        {
-            Suite = suite;
-        }
-
-        public int ObterQuantidadeHospedes()
-        {
-            // TODO: Retorna a quantidade de hóspedes (propriedade Hospedes)
-            // *IMPLEMENTE AQUI*
-            return 0;
-        }
-
-        public decimal CalcularValorDiaria()
-        {
-            // TODO: Retorna o valor da diária
-            // Cálculo: DiasReservados X Suite.ValorDiaria
-            // *IMPLEMENTE AQUI*
-            decimal valor = 0;
-
-            // Regra: Caso os dias reservados forem maior ou igual a 10, conceder um desconto de 10%
-            // *IMPLEMENTE AQUI*
-            if (true)
-            {
-                valor = 0;
-            }
-
-            return valor;
-        }
+        return valor;
     }
 }
